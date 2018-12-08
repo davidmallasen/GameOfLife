@@ -1,4 +1,5 @@
 import unittest
+
 from GameOfLife.game_of_life import next_board_state
 
 
@@ -87,9 +88,9 @@ class TestGameOfLife(unittest.TestCase):
             [0, 1, 0]
         ]
         expected_next_state2 = [
-            [0, 1, 0],
-            [1, 0, 1],
-            [0, 1, 0]
+            [1, 1, 0],
+            [1, 1, 0],
+            [0, 0, 0]
         ]
         actual_next_state1 = next_board_state(init_state1)
         actual_next_state2 = next_board_state(init_state2)
@@ -103,9 +104,9 @@ class TestGameOfLife(unittest.TestCase):
             [0, 1, 0]
         ]
         expected_next_state = [
-            [0, 1, 0],
+            [1, 1, 1],
             [1, 0, 1],
-            [0, 1, 0]
+            [1, 1, 1]
         ]
         actual_next_state = next_board_state(init_state)
         self.assertEqual(expected_next_state, actual_next_state)
