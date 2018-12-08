@@ -1,6 +1,6 @@
 import unittest
 
-from GameOfLife.game_of_life import next_board_state
+from game_of_life import next_board_state
 
 
 class TestGameOfLife(unittest.TestCase):
@@ -107,6 +107,20 @@ class TestGameOfLife(unittest.TestCase):
             [1, 1, 1],
             [1, 0, 1],
             [1, 1, 1]
+        ]
+        actual_next_state = next_board_state(init_state)
+        self.assertEqual(expected_next_state, actual_next_state)
+
+    def test_different_height_width(self):
+        init_state = [
+            [1, 0, 0, 0],
+            [0, 0, 1, 0],
+            [1, 1, 0, 1]
+        ]
+        expected_next_state = [
+            [0, 0, 0, 0],
+            [1, 0, 1, 0],
+            [0, 1, 1, 0]
         ]
         actual_next_state = next_board_state(init_state)
         self.assertEqual(expected_next_state, actual_next_state)

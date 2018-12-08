@@ -41,7 +41,7 @@ def random_state(height, width):
     """
 
     return [[DEAD if random() >= 0.5 else LIVE
-            for _ in range(width)]
+             for _ in range(width)]
             for _ in range(height)]
 
 
@@ -120,10 +120,10 @@ def number_of_neighbors(i, j, height, width, state):
     """
 
     count = 0
-    for h in range(i-1, i+2):
+    for h in range(i - 1, i + 2):
         if h < 0 or h >= height:
             continue
-        for w in range(j-1, j+2):
+        for w in range(j - 1, j + 2):
             if w < 0 or w >= width or (h == i and w == j):
                 continue
             if state[h][w] == LIVE:
@@ -169,12 +169,14 @@ def next_board_state(state):
     width = state_width(state)
     next_state = dead_state(height, width)
 
-    for i in range(width):
-        for j in range(height):
+    for i in range(height):
+        for j in range(width):
             next_state[i][j] = next_cell_value(i, j, height, width, state)
 
     return next_state
 
 
 if __name__ == "__main__":
-    render(random_state(10, 15))
+    state1 = random_state(3, 4)
+    print(state1)
+    print(next_board_state(state1))
