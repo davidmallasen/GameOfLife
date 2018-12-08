@@ -1,9 +1,10 @@
 from random import random
+import time
 
 DEAD = 0
 LIVE = 1
 
-"""
+'''
 Example state of height 3 and width 4 (dimensions 3x4) where the only 
 live cell has coordinates (row=2, column=3):
 
@@ -12,7 +13,7 @@ state = [
     [0, 0, 0, 0],
     [0, 0, 0, 1]
 ]
-"""
+'''
 
 
 def dead_state(height, width):
@@ -77,15 +78,19 @@ def render(state):
     Prints the game state.
 
     :arg state: A game state.
+
+    :return: Nothing.
     """
 
     display_as = {DEAD: ' ', LIVE: '#'}
     width = state_width(state)
 
-    print('-' * (width + 2))
+    board = ["-" * (width + 2)]
     for row in state:
-        print("|%s|" % "".join(display_as[x] for x in row))
-    print('-' * (width + 2))
+        board.append("|%s|" % "".join(display_as[x] for x in row))
+    board.append("-" * (width + 2))
+
+    print("\n".join(board))
 
 
 '''
@@ -151,10 +156,11 @@ def next_cell_value(i, j, height, width, state):
             return DEAD
         else:
             return LIVE
-    elif num_neighbors == 3:
-        return LIVE
     else:
-        return DEAD
+        if num_neighbors == 3:
+            return LIVE
+        else:
+            return DEAD
 
 
 def next_board_state(state):
@@ -162,6 +168,7 @@ def next_board_state(state):
     Given an input state, calculates the next state of the game.
 
     :param state: The current game state.
+
     :return: The next state of the game based on the input state.
     """
 
@@ -176,7 +183,21 @@ def next_board_state(state):
     return next_state
 
 
+def run_forever(init_state):
+    """
+    Runs the game of life, starting from the given initial state.
+
+    :param init_state: The initial game state.
+
+    :return: Nothing
+    """
+
+    next_state = init_state
+    while True:
+        render(next_state)
+        next_state = next_board_state(next_state)
+        time.sleep(1)
+
+
 if __name__ == "__main__":
-    state1 = random_state(3, 4)
-    print(state1)
-    print(next_board_state(state1))
+    run_forever(random_state(10, 15))
