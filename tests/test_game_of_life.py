@@ -1,6 +1,6 @@
 import unittest
 
-from game_of_life import next_board_state
+from game_of_life.game_of_life import next_board_state
 
 
 class TestGameOfLife(unittest.TestCase):

@@ -196,8 +196,27 @@ def run_forever(init_state):
     while True:
         render(next_state)
         next_state = next_board_state(next_state)
-        time.sleep(1)
+        time.sleep(0.03)
+
+
+def load_game_state(path):
+    """
+    Loads a game state from the input file.
+
+    :param path: Input file path. It should be a rectangle of 0s and 1s.
+
+    :return: The game state parsed from the input file.
+    """
+    with open(path) as file:
+        lines = file.readlines()
+
+    init_state = dead_state(len(lines), len(lines[0]) - 1)  # Minus \n
+    for i, line in enumerate(lines):
+        for j, num in enumerate(line.rstrip()):
+            init_state[i][j] = int(num)
+
+    return init_state
 
 
 if __name__ == "__main__":
-    run_forever(random_state(10, 15))
+    run_forever(load_game_state("./Patterns/gosper_glider_gun.txt"))
