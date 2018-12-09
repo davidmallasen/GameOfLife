@@ -1,8 +1,8 @@
 from random import random
 import time
 
-DEAD = 0
-LIVE = 1
+_DEAD = 0
+_LIVE = 1
 
 '''
 Example state of height 3 and width 4 (dimensions 3x4) where the only 
@@ -41,12 +41,12 @@ def random_state(height, width):
         randomly set to either DEAD or LIVE with equal probability.
     """
 
-    return [[DEAD if random() >= 0.5 else LIVE
+    return [[_DEAD if random() >= 0.5 else _LIVE
              for _ in range(width)]
             for _ in range(height)]
 
 
-def state_height(state):
+def _state_height(state):
     """
     Get the height of a state.
 
@@ -58,7 +58,7 @@ def state_height(state):
     return len(state)
 
 
-def state_width(state):
+def _state_width(state):
     """
     Get the width of a state.
 
@@ -82,35 +82,18 @@ def render(state):
     :return: Nothing.
     """
 
-    display_as = {DEAD: ' ', LIVE: '#'}
-    width = state_width(state)
+    display_as = {_DEAD: ' ', _LIVE: '#'}
+    width = _state_width(state)
 
-    board = ["-" * (width + 2)]
-    for row in state:
-        board.append("|%s|" % "".join(display_as[x] for x in row))
-    board.append("-" * (width + 2))
-
+    print("-" * (width + 2))
+    board = ["|{line}|".format(
+        line="".join(display_as[x] for x in row))
+        for row in state]
     print("\n".join(board))
+    print("-" * (width + 2))
 
 
-'''
-def out_of_bounds(i, j, state):
-    """
-    Checks if a position is out of bounds.
-
-    :param i: Position row.
-    :param j: Position column.
-    :param state: A game state.
-
-    :return: True if (i, j) is out of bounds. False otherwise.
-    """
-
-    return (i < 0 or i >= state_height(state)
-            or j < 0 or j >= state_width(state))
-'''
-
-
-def number_of_neighbors(i, j, height, width, state):
+def _number_of_neighbors(i, j, height, width, state):
     """
     Counts the number of LIVE neighbors of the cell in position (i, j).
 
@@ -131,13 +114,13 @@ def number_of_neighbors(i, j, height, width, state):
         for w in range(j - 1, j + 2):
             if w < 0 or w >= width or (h == i and w == j):
                 continue
-            if state[h][w] == LIVE:
+            if state[h][w] == _LIVE:
                 count += 1
 
     return count
 
 
-def next_cell_value(i, j, height, width, state):
+def _next_cell_value(i, j, height, width, state):
     """
     Calculates the next value of the cell (i, j) in the given state.
 
@@ -150,17 +133,17 @@ def next_cell_value(i, j, height, width, state):
     :return: Next value of the input cell in the input state.
     """
 
-    num_neighbors = number_of_neighbors(i, j, height, width, state)
-    if state[i][j] == LIVE:
+    num_neighbors = _number_of_neighbors(i, j, height, width, state)
+    if state[i][j] == _LIVE:
         if num_neighbors < 2 or num_neighbors > 3:
-            return DEAD
+            return _DEAD
         else:
-            return LIVE
+            return _LIVE
     else:
         if num_neighbors == 3:
-            return LIVE
+            return _LIVE
         else:
-            return DEAD
+            return _DEAD
 
 
 def next_board_state(state):
@@ -172,13 +155,13 @@ def next_board_state(state):
     :return: The next state of the game based on the input state.
     """
 
-    height = state_height(state)
-    width = state_width(state)
+    height = _state_height(state)
+    width = _state_width(state)
     next_state = dead_state(height, width)
 
     for i in range(height):
         for j in range(width):
-            next_state[i][j] = next_cell_value(i, j, height, width, state)
+            next_state[i][j] = _next_cell_value(i, j, height, width, state)
 
     return next_state
 
